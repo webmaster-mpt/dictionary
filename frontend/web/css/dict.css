@@ -1,0 +1,16 @@
+.dictionary-show > .collapse > .card{
+    width: 98%;
+}
+.dictionary-show > .row > .card {
+    max-width: 16rem;
+    width: 100%;
+    margin: 0 21px 15px 0;
+}
+.voice-btn{
+    background-color: #fff;
+    color: #DAD9E3;
+}
+.btn-linkes{
+    display: flex;
+    justify-content: end;
+}
