@@ -2,12 +2,18 @@
 
 namespace frontend\controllers;
 
+use frontend\components\FastCrud;
 use frontend\models\Dictionary;
 use frontend\models\DictionarySearch;
+use JsonException;
+use Yii;
+use yii\base\InvalidConfigException;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
+use yii\web\JsonResponseFormatter;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 
 /**
  * DictionaryController implements the CRUD actions for Dictionary model.
@@ -83,10 +89,22 @@ class DictionaryController extends Controller
         ]);
     }
     /**
-     * Creates a new Dictionary model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
+     * Fast Create for DictionaryModel
      * @return string|\yii\web\Response
      */
+    public function actionFastCrud($uniq_id)
+    {
+        $dictParts = Dictionary::find()->where(['uniq_id' => $uniq_id])->indexBy('id')->all();
+        $dictParts = FastCrud::handleTableForm($uniq_id, Dictionary::class, 'uniq_id', $dictParts);
+
+        $model = Dictionary::find(['uniq_id' => $uniq_id]) ?? new Dictionary();
+
+        return $this->render('fast-crud', [
+            'model' => $model,
+            'dictParts' => $dictParts
+        ]);
+    }
+
     public function actionShow()
     {
         $model = new Dictionary();
@@ -123,6 +141,22 @@ class DictionaryController extends Controller
             'model' => $model,
             'rows' => $rows
         ]);
+    }
+
+    public function actionLearn($id = false)
+    {
+        $model = new Dictionary();
+        $rows = Dictionary::find()->where(['type' => 'learn'])->all();
+
+        return $this->render('learn', [
+            'model' => $model,
+            'rows' => $rows
+        ]);
+    }
+
+    public function actionTranslate()
+    {
+        return $this->render('translate');
     }
 
     /**
@@ -173,5 +207,26 @@ class DictionaryController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    /**
+     * @param int $id
+     * @return string[]
+     * @throws InvalidConfigException
+     * @throws JsonException
+     * @throws NotFoundHttpException
+     */
+    public function actionChangeType($id){
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        Yii::$app->response->formatters = [
+            Response::FORMAT_JSON => [
+                'class' => JsonResponseFormatter::class,
+                'prettyPrint' => true
+            ]
+        ];
+        $model = $this->findModel($id);
+        $model->type = 'wort';
+        $model->save();
+        return $this->redirect('learn');
     }
 }

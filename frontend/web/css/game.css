@@ -1,0 +1,21 @@
+.level-x {
+    height: 450px;
+    text-align: center;
+}
+
+.myCards {
+    padding: 5px;
+}
+
+.de-body {
+    padding: 5px !important;
+}
+
+input {
+    /*border: 1px solid #000000;*/
+    /*border-radius: 5px;*/
+    width: 100%;
+    border: 0;
+    border-bottom: 1px solid #000;
+    outline: none;
+}

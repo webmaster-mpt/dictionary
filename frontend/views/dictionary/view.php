@@ -6,7 +6,7 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model frontend\models\Dictionary */
 
-$this->title = $model->deutch . ($model->russian);
+$this->title = $model->deutch . ' / ' . ($model->russian);
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="dictionary-view">

@@ -20,10 +20,11 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'type')->dropDownList([
             'wort' => 'wort',
-            'bieten' => 'bieten'
+            'bieten' => 'bieten',
+            'learn' => 'learn'
     ]) ?>
 
-    <div class="form-group mt-2">
+    <div class="form-group">
         <?= Html::submitButton('Сохранить', ['class' => 'btn btn-success']) ?>
     </div>
 
